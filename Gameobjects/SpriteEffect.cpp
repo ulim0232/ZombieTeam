@@ -34,10 +34,10 @@ void SpriteEffect::Update(float dt)
 	//sprite.setColor({ 255, 255, 255, a });
 
 	//--color lerpo 사용---
-	//sf::Color a = { 255,255,255,0 };
-	//sf::Color b = sf::Color::White;
-	//sf::Color color = Utils::Lerp(a, b, (duration - timer) / duration);
-	//sprite.setColor(color); //점점 투명해지도록
+	sf::Color a = { 255,255,255,0 };
+	sf::Color b = sf::Color::White;
+	sf::Color color = Utils::Lerp(a, b, (duration - timer) / duration);
+	sprite.setColor(color); //점점 투명해지도록
 
 	//--vecter2f lerp 사용--
 	//UINT8 a = Utils::Lerp(255, 0, (timer / duration));

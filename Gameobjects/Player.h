@@ -25,6 +25,7 @@ protected:
 	ObjectPool<Bullet> poolBullets;
 public:
 	Player(const string textureId = "", const string n = "");
+	virtual ~Player() override {};
 
 	virtual void Init() override;
 	virtual void Release() override;
