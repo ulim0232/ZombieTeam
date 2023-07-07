@@ -11,6 +11,8 @@
 #include "SpriteEffect.h"
 #include "TextGo.h"
 #include "RectangleGo.h"
+#include <sstream>
+
 
 
 SceneDev1::SceneDev1() : Scene(SceneId::Dev1), player(nullptr)
@@ -51,6 +53,7 @@ void SceneDev1::Init()
 	AddGo(new TextGo("Wave", "fonts/zombiecontrol.ttf"));
 	AddGo(new TextGo("ZombieCount", "fonts/zombiecontrol.ttf"));
 	AddGo(new TextGo("AmmoCount", "fonts/zombiecontrol.ttf"));
+	AddGo(new TextGo("Fps", "fonts/zombiecontrol.ttf"));
 
 	//총알 아이콘
 	AddGo(new SpriteGo("graphics/ammo_icon.png", "AmmoIcon"));
@@ -130,6 +133,8 @@ void SceneDev1::Enter()
 	isPause = true;
 	score = 0;
 	wave = 0;
+	fps = 0;
+	totalDt = 0;
 
 	/*----UI----*/
 	sf::Vector2f textPos = uiView.getSize();
@@ -165,6 +170,10 @@ void SceneDev1::Enter()
 	findText->SetOrigin(Origins::BR);
 	findText->SetPosition(textPos.x * 0.95f, textPos.y * 0.97f); //setposition 위치 조심
 	findText->sortLayer = 100;
+
+	fpsGo = (TextGo*)FindGo("Fps");
+	std::string ss = "FPS: " + to_string(fps);
+	fpsGo->SetText(ss, 20, sf::Color::Green, Origins::TL, 100, 10, 10);
 
 	SpriteGo* findGo = (SpriteGo*)FindGo("AmmoIcon");
 	findGo->SetOrigin(Origins::BL);
@@ -203,6 +212,17 @@ void SceneDev1::Exit()
 
 void SceneDev1::Update(float dt)
 {
+	totalDt += dt;
+	fps++;
+	if (totalDt > 1.f)
+	{
+		std::string ss = "FPS: " + to_string(fps);
+		fpsGo->text.setString(ss);
+
+		totalDt = 0;
+		fps = 0.f;
+	}
+
 	worldView.setCenter(player->GetPosition()); //플레이어의 위치로 센터로 계속 바꾼다.
 	if (isGameOver)
 	{

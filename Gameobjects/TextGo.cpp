@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "TextGo.h"
 #include "ResourceMgr.h"
+#include <sstream>
 
 TextGo::TextGo(const string& n, const std::string& rId)
 	:GameObject(n), resourceId(rId)
@@ -63,4 +64,14 @@ void TextGo::Update(float dt)
 void TextGo::Draw(sf::RenderWindow& window)
 {
 	window.draw(text);
+}
+
+void TextGo::SetText(std::string ss, int size, sf::Color color, Origins origin, int soltLayer, float x, float y)
+{
+	text.setString(ss);
+	text.setCharacterSize(size);
+	text.setFillColor(color);
+	text.setPosition(x, y);
+	Utils::SetOrigin(text, origin);
+	this->sortLayer = soltLayer;
 }

@@ -6,6 +6,7 @@ class Player;
 class VertexArrayGo;
 class Zombie;
 class SpriteEffect;
+class TextGo;
 
 class SceneDev1 :public Scene
 {
@@ -14,6 +15,7 @@ protected:
 	
 	VertexArrayGo* background;
 	sf::FloatRect wallBounds;
+	TextGo* fpsGo;
 
 	ObjectPool<Zombie> zombiePool;
 	ObjectPool<SpriteEffect> bloodEffectPool;
@@ -23,6 +25,8 @@ protected:
 	int HiScore = 0;
 	int wave = 0;
 	bool isPause = true;
+	int fps = 0;
+	float totalDt = 0.f;
 
 public:
 	SceneDev1();
