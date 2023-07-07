@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SceneMgr.h"
 #include "SceneDev1.h"
+#include "SceneTitle.h"
 
 void SceneMgr::ChangeScene(SceneId id)
 {
@@ -21,7 +22,9 @@ void SceneMgr::Init()
 	{
 		Release();
 	}
+	scenes.push_back(new SceneTitle());
 	scenes.push_back(new SceneDev1());
+	
 
 	for (auto scene : scenes)
 	{

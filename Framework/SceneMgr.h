@@ -14,7 +14,7 @@ protected:
 
 	std::vector<Scene*> scenes; //생성된 씬들을 담을 컨테이너
 	SceneId currentSceneId = SceneId::None; //현재 씬Id 관리
-	SceneId startSceneId = SceneId::Dev1; //제일 처음에 실행될 씬의 Id
+	SceneId startSceneId = SceneId::Title; //제일 처음에 실행될 씬의 Id
 
 	Scene* currentScene = nullptr;
 

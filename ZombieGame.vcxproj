@@ -172,6 +172,7 @@
     <ClCompile Include="Gameobjects\VertexArrayGo.cpp" />
     <ClCompile Include="Gameobjects\Zombie.cpp" />
     <ClCompile Include="Gameobjects\SpriteEffect.cpp" />
+    <ClCompile Include="Scenes\SceneTitle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\ObjectPool.h" />
@@ -195,6 +196,7 @@
     <ClInclude Include="Gameobjects\VertexArrayGo.h" />
     <ClInclude Include="Gameobjects\Zombie.h" />
     <ClInclude Include="Gameobjects\SpriteEffect.h" />
+    <ClInclude Include="Scenes\SceneTitle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
