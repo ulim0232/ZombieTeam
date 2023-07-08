@@ -267,10 +267,25 @@ void SceneDev1::Update(float dt)
 		TextGo* findText = (TextGo*)FindGo("AmmoCount");
 		findText->text.setString(to_string(player->GetAmmo()) + "/" + to_string(player->GetMaxAmmo()));
 	}
+	//fps 표시 on/off
 	if (INPUT_MGR.GetKey(sf::Keyboard::LControl) && INPUT_MGR.GetKeyDown(sf::Keyboard::G))
 	{
 		fpsGo->SetActive(!fpsGo->GetActive());
 	}
+	//스탯업 기능 테스트
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num4))
+	{
+		player->StatUp(1);
+	}
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num5))
+	{
+		player->StatUp(2);
+	}
+	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num6))
+	{
+		player->StatUp(3);
+	}
+
 
 
 }

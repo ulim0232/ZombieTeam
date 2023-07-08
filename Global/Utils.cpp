@@ -153,3 +153,17 @@ float Utils::Angle(const sf::Vector2f& start, const sf::Vector2f& end)
 	return Angle(Normalize(end - start)); 
 	//start에서 end로 바라보는 방향을 구해서 넘김
 }
+
+//각도를 넘겨서 x, y좌표 계산
+sf::Vector2f Utils::Direction(const float angle)
+{
+	//PI는 원의 지름 / 원의 둘레 == 반지름 / (원의 둘레/2) 
+	//각도 단위는 반지름이 1인 원의 라디안
+	float radians = angle * (M_PI / 180.f);
+
+	// x와 y 좌표 계산
+	float x = cos(radians);
+	float y = sin(radians);
+
+	return sf::Vector2f(x, y);
+}

@@ -14,6 +14,11 @@ protected:
 	int hp = 0;
 	int maxAmmo = 900;
 	int ammo = 0;
+	float shotDelay = 0.5f;
+	float timer = 0.f;
+	bool rebound = false;
+	int shotBulletNum = 1;
+
 
 	float CollisionTimer = 0.0f; 
 	float Interval = 1.f; //체력 깎을 간격
@@ -42,6 +47,11 @@ public:
 	int GetMaxAmmo();
 	int GetAmmo();
 	int GetHp();
+
+	void StatUp(int num);
+	void DamageUp(int damage);
+	void ShotSpeedUp(float shotDelay);
+	void AddShotBullet();
 
 	bool isAlive = false;
 };

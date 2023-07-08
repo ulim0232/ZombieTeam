@@ -46,6 +46,8 @@ public:
 	//대부분은 라디안 단위(180도가 파이)이므로 이를 degree 단위로 변환한 후 반환
 	static float Angle(const sf::Vector2f& dir); 
 	static float Angle(const sf::Vector2f& start, const sf::Vector2f& end);
+	
+	static sf::Vector2f Direction(const float angle);
 };
 
 
