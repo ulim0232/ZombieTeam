@@ -174,6 +174,7 @@ void SceneDev1::Enter()
 	fpsGo = (TextGo*)FindGo("Fps");
 	std::string ss = "FPS: " + to_string(fps);
 	fpsGo->SetText(ss, 20, sf::Color::Green, Origins::TL, 100, 10, 10);
+	fpsGo->SetActive(false);
 
 	SpriteGo* findGo = (SpriteGo*)FindGo("AmmoIcon");
 	findGo->SetOrigin(Origins::BL);
@@ -266,6 +267,11 @@ void SceneDev1::Update(float dt)
 		TextGo* findText = (TextGo*)FindGo("AmmoCount");
 		findText->text.setString(to_string(player->GetAmmo()) + "/" + to_string(player->GetMaxAmmo()));
 	}
+	if (INPUT_MGR.GetKey(sf::Keyboard::LControl) && INPUT_MGR.GetKeyDown(sf::Keyboard::G))
+	{
+		fpsGo->SetActive(!fpsGo->GetActive());
+	}
+
 
 }
 
