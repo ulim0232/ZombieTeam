@@ -89,8 +89,9 @@ void Player::Update(float dt)
 	/*---총알 발사---*/
 	if (!rebound)
 	{
-		if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
+		if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left) && ammo >= shotBulletNum)
 		{
+			
 			Scene* scene = SCENE_MGR.GetCurrScene();
 			SceneDev1* sceneDev1 = dynamic_cast<SceneDev1*>(scene);
 
@@ -114,7 +115,7 @@ void Player::Update(float dt)
 				}
 				ammo--;
 			}
-			rebound = true;
+			rebound = true;		
 
 
 			//원래 코드
