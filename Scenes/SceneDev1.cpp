@@ -300,6 +300,7 @@ void SceneDev1::Update(float dt)
 	}
 	if (zombiePool.GetUseList().size() == 0)
 	{
+		itemPool.Clear(); //웨이브 바뀔 때마다 아이템 삭제
 		if (wave > 0)
 		{
 			SpriteGo* findGo = (SpriteGo*)FindGo("StatUpBg");
@@ -333,20 +334,13 @@ void SceneDev1::Update(float dt)
 			findText->text.setString("WAVE: " + to_string(wave));
 		}	
 	}
-		itemPool.Clear(); //웨이브 바뀔 때마다 아이템 삭제
-		SpawnZombies(10, player->GetPosition(), 800.f);
-		wave++;
-		TextGo* findText = (TextGo*)FindGo("Wave");
-		findText->text.setString("WAVE: " + to_string(wave));
-	}
-	RectangleGo* hpBar = (RectangleGo*)FindGo("HpBar");
-	hpBar->rectangle.setSize({ player->GetHp() * 3.f, 30.f });
-
 	//fps 표시 on/off
 	if (INPUT_MGR.GetKey(sf::Keyboard::LControl) && INPUT_MGR.GetKeyDown(sf::Keyboard::G))
 	{
 		fpsGo->SetActive(!fpsGo->GetActive());
 	}
+	RectangleGo* hpBar = (RectangleGo*)FindGo("HpBar");
+	hpBar->rectangle.setSize({ player->GetHp() * 3.f, 30.f });
 
 	TextGo* findText = (TextGo*)FindGo("AmmoCount");
 	findText->text.setString(to_string(player->GetAmmo()) + "/" + to_string(player->GetMaxAmmo()));
