@@ -23,7 +23,7 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
 
-	void SetText(std::string ss, int size, sf::Color color, Origins origin, int soltLayer, float x, float y);
+	void SetText(const std::string& ss, const int& size, sf::Color color, Origins origin, int soltLayer, float x, float y);
 
 };
 

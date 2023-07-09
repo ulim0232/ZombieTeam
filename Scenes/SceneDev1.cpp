@@ -25,7 +25,7 @@ SceneDev1::SceneDev1() : Scene(SceneId::Dev1), player(nullptr)
 	resources.push_back(make_tuple(ResourceTypes::Texture, "graphics/bullet.png"));
 	resources.push_back(make_tuple(ResourceTypes::Texture, "graphics/blood.png"));
 	resources.push_back(make_tuple(ResourceTypes::Font, "fonts/zombiecontrol.ttf"));
-
+	resources.push_back(make_tuple(ResourceTypes::Texture, "graphics/background.png"));
 }
 
 SceneDev1::~SceneDev1()
@@ -54,6 +54,11 @@ void SceneDev1::Init()
 	AddGo(new TextGo("ZombieCount", "fonts/zombiecontrol.ttf"));
 	AddGo(new TextGo("AmmoCount", "fonts/zombiecontrol.ttf"));
 	AddGo(new TextGo("Fps", "fonts/zombiecontrol.ttf"));
+	AddGo(new TextGo("StatUpText", "fonts/zombiecontrol.ttf"));
+
+	//스탯 업 백그라운드 생성
+	AddGo(new SpriteGo("graphics/background.png", "StatUpBg"));
+	
 
 	//총알 아이콘
 	AddGo(new SpriteGo("graphics/ammo_icon.png", "AmmoIcon"));
@@ -171,15 +176,27 @@ void SceneDev1::Enter()
 	findText->SetPosition(textPos.x * 0.95f, textPos.y * 0.97f); //setposition 위치 조심
 	findText->sortLayer = 100;
 
+	findText = (TextGo*)FindGo("StatUpText");
+	std::string ss = "Num4: Increase Damage\nNum5: Increase Shot speed\nNum6: Increase shot number";
+	findText->SetText(ss, 50, sf::Color::Red, Origins::MC, 100, uiView.getSize().x * 0.5f, uiView.getSize().y * 0.5f);
+	findText->SetActive(false);
+
 	fpsGo = (TextGo*)FindGo("Fps");
-	std::string ss = "FPS: " + to_string(fps);
-	fpsGo->SetText(ss, 20, sf::Color::Green, Origins::TL, 100, 10, 10);
+	ss = "FPS: " + to_string(fps);
+	fpsGo->SetText(ss, 17, sf::Color::Green, Origins::TL, 100, 10.f, 10.f);
 	fpsGo->SetActive(false);
 
 	SpriteGo* findGo = (SpriteGo*)FindGo("AmmoIcon");
 	findGo->SetOrigin(Origins::BL);
 	findGo->SetPosition(textPos.x * 0.05f, textPos.y * 0.99f);
 	findGo->sortLayer = 100;
+
+	findGo = (SpriteGo*)FindGo("StatUpBg");
+	findGo->sortLayer = 100;
+	findGo->sortOrder = -1;
+	findGo->SetOrigin(Origins::MC);
+	findGo->SetPosition(textPos.x * 0.5f, textPos.y * 0.5f);
+	findGo->SetActive(false);
 
 	findText = (TextGo*)FindGo("AmmoCount");
 	findText->text.setCharacterSize(40);
@@ -255,10 +272,38 @@ void SceneDev1::Update(float dt)
 	}
 	if (zombiePool.GetUseList().size() == 0)
 	{
-		SpawnZombies(10, player->GetPosition(), 800.f);
-		wave++;
-		TextGo* findText = (TextGo*)FindGo("Wave");
-		findText->text.setString("WAVE: " + to_string(wave));
+		if (wave > 0)
+		{
+			SpriteGo* findGo = (SpriteGo*)FindGo("StatUpBg");
+			findGo->SetActive(true);
+			TextGo* findTgo = (TextGo*)FindGo("StatUpText");
+			findTgo->SetActive(true);
+			player->SetActive(false);
+
+			//스탯업 기능 테스트
+			if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num4))
+			{
+				player->StatUp(1);
+				NextWave(findGo, findTgo);
+			}
+			else if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num5))
+			{
+				player->StatUp(2);
+				NextWave(findGo, findTgo);
+			}
+			else if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num6))
+			{
+				player->StatUp(3);
+				NextWave(findGo, findTgo);
+			}
+		}
+		else
+		{
+			SpawnZombies(10, player->GetPosition(), 800.f);
+			wave++;
+			TextGo* findText = (TextGo*)FindGo("Wave");
+			findText->text.setString("WAVE: " + to_string(wave));
+		}	
 	}
 	RectangleGo* hpBar = (RectangleGo*)FindGo("HpBar");
 	hpBar->rectangle.setSize({ player->GetHp() * 3.f, 30.f });
@@ -272,22 +317,6 @@ void SceneDev1::Update(float dt)
 	{
 		fpsGo->SetActive(!fpsGo->GetActive());
 	}
-	//스탯업 기능 테스트
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num4))
-	{
-		player->StatUp(1);
-	}
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num5))
-	{
-		player->StatUp(2);
-	}
-	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num6))
-	{
-		player->StatUp(3);
-	}
-
-
-
 }
 
 void SceneDev1::Draw(sf::RenderWindow& window)
@@ -411,4 +440,16 @@ void SceneDev1::OnDiePlayer()
 VertexArrayGo* SceneDev1::GetBackground()
 {
 	return background;
+}
+
+void SceneDev1::NextWave(SpriteGo* statUpBg, TextGo* statUpText)
+{
+	SpawnZombies(10, player->GetPosition(), 800.f);
+	wave++;
+	TextGo* findText = (TextGo*)FindGo("Wave");
+	findText->text.setString("WAVE: " + to_string(wave));
+
+	statUpBg->SetActive(false);
+	statUpText->SetActive(false);
+	player->SetActive(true);
 }

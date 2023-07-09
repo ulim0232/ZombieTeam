@@ -7,6 +7,7 @@ class VertexArrayGo;
 class Zombie;
 class SpriteEffect;
 class TextGo;
+class SpriteGo;
 
 class SceneDev1 :public Scene
 {
@@ -55,6 +56,7 @@ public:
 	void OnDiePlayer();
 	VertexArrayGo* GetBackground();
 
+	void NextWave(SpriteGo* statUpBg, TextGo* statUpText);
 };
 
 template<typename T>

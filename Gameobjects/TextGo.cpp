@@ -66,10 +66,10 @@ void TextGo::Draw(sf::RenderWindow& window)
 	window.draw(text);
 }
 
-void TextGo::SetText(std::string ss, int size, sf::Color color, Origins origin, int soltLayer, float x, float y)
+void TextGo::SetText(const std::string& ss, const int& size, sf::Color color, Origins origin, int soltLayer, float x, float y)
 {
-	text.setString(ss);
 	text.setCharacterSize(size);
+	text.setString(ss);
 	text.setFillColor(color);
 	text.setPosition(x, y);
 	Utils::SetOrigin(text, origin);
