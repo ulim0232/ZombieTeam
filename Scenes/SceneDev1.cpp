@@ -25,7 +25,7 @@ SceneDev1::SceneDev1() : Scene(SceneId::Dev1), player(nullptr)
 	resources.push_back(make_tuple(ResourceTypes::Texture, "graphics/crawler.png"));
 	resources.push_back(make_tuple(ResourceTypes::Texture, "graphics/bullet.png"));
 	resources.push_back(make_tuple(ResourceTypes::Texture, "graphics/blood.png"));
-	resources.push_back(make_tuple(ResourceTypes::Texture, "graphics/heart_pickup.png"));
+	resources.push_back(make_tuple(ResourceTypes::Texture, "graphics/health_pickup.png"));
 	resources.push_back(make_tuple(ResourceTypes::Texture, "graphics/ammo_pickup.png"));
 	resources.push_back(make_tuple(ResourceTypes::Font, "fonts/zombiecontrol.ttf"));
 	resources.push_back(make_tuple(ResourceTypes::Texture, "graphics/background.png"));
@@ -126,7 +126,7 @@ void SceneDev1::Init()
 		}
 		else if (itemtype == Item::ItemTypes::Potion)
 		{
-			item->textureId = "graphics/heart_pickup.png";
+			item->textureId = "graphics/health_pickup.png";
 		}
 		item->SetPlayer(player);
 		item->sortLayer = 2;
@@ -300,7 +300,17 @@ void SceneDev1::Update(float dt)
 	}
 	if (zombiePool.GetUseList().size() == 0)
 	{
-		itemPool.Clear(); //웨이브 바뀔 때마다 아이템 삭제
+		//웨이브 바뀔 때마다 아이템 삭제
+		std::list<Item*> items = itemPool.GetUseList();
+		if (!items.empty())
+		{
+			for (auto item : items)
+			{
+				RemoveGo(item);
+				itemPool.Return(item);
+			}
+		}
+
 		if (wave > 0)
 		{
 			SpriteGo* findGo = (SpriteGo*)FindGo("StatUpBg");
