@@ -20,8 +20,6 @@ const int Zombie::damages[3] = { 15, 10, 5 };
 const float Zombie::attackRates[3] = { 2.f, 0.5f, 1.f };
 const int Zombie::scores[3] = { 10, 5, 3 };
 
-//end
-
 Zombie::Zombie(const string& n)
     :SpriteGo("", n)
 {

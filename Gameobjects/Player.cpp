@@ -167,6 +167,18 @@ void Player::OnHitZombie(int damage)
 	}
 }
 
+void Player::TakeItem(Item::ItemTypes type)
+{
+	if (type == Item::ItemTypes::Ammo && ammo <= maxAmmo - 10)
+	{
+		ammo += 10;
+	}
+	if (type == Item::ItemTypes::Potion && hp <= maxHp - 10)
+	{
+		hp += 10;
+	}
+}
+
 void Player::OnDie() //플레이어가 죽었을 때
 {
 	isAlive = false;

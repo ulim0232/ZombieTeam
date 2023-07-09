@@ -12,8 +12,8 @@ protected:
 	sf::RenderWindow window; //화면
 	sf::Clock clock; //시간
 
-	int screenWidth = 1280;
-	int screenHeight = 720;
+	int screenWidth = 1920;
+	int screenHeight = 1080;
 	string title = "Zombie Survival";
 
 public:

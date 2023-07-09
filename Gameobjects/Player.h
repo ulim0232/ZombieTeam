@@ -2,6 +2,7 @@
 #include "SpriteGo.h"
 #include "ObjectPool.h"
 #include "Bullet.h"
+#include "Item.h"
 class Zombie;
 
 class Player : public SpriteGo
@@ -30,6 +31,7 @@ protected:
 	ObjectPool<Bullet> poolBullets;
 public:
 	Player(const string textureId = "", const string n = "");
+	virtual ~Player() override {};
 
 	virtual void Init() override;
 	virtual void Release() override;
@@ -40,6 +42,7 @@ public:
 
 	void SetZombieList(list<Zombie*>* list);
 	void OnHitZombie(int damage);
+	void TakeItem(Item::ItemTypes type);
 
 	void OnDie();
 

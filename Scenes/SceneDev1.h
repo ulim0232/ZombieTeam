@@ -6,6 +6,7 @@ class Player;
 class VertexArrayGo;
 class Zombie;
 class SpriteEffect;
+class Item;
 class TextGo;
 class SpriteGo;
 
@@ -20,6 +21,7 @@ protected:
 
 	ObjectPool<Zombie> zombiePool;
 	ObjectPool<SpriteEffect> bloodEffectPool;
+	ObjectPool<Item> itemPool;
 
 	bool isGameOver;
 	int score = 0;
@@ -50,6 +52,7 @@ public:
 	void ClearObjectPool(ObjectPool<T>& pool);
 
 	void OnDieZombie(Zombie* zombie); //좀비가 죽었을 때 씬에서 해야할 일
+	void TakeItem(Item* item);
 
 	const list<Zombie*>* GetZombieList() const;
 

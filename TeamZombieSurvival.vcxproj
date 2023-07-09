@@ -159,6 +159,7 @@
     <ClCompile Include="Gameobjects\RectangleGo.cpp" />
     <ClCompile Include="Gameobjects\TextGo.cpp" />
     <ClCompile Include="Global\Utils.cpp" />
+    <ClCompile Include="Gameobjects\Item.cpp" />
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
@@ -185,6 +186,7 @@
     <ClInclude Include="Framework\InputMgr.h" />
     <ClInclude Include="Global\Utils.h" />
     <ClInclude Include="Gameobjects\Player.h" />
+    <ClInclude Include="Gameobjects\Item.h" />
     <ClInclude Include="Scenes\ResourceMgr.h" />
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Scenes\SceneDev1.h" />
