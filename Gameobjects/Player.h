@@ -2,6 +2,7 @@
 #include "SpriteGo.h"
 #include "ObjectPool.h"
 #include "Bullet.h"
+#include "Item.h"
 class Zombie;
 
 class Player : public SpriteGo
@@ -36,6 +37,7 @@ public:
 
 	void SetZombieList(list<Zombie*>* list);
 	void OnHitZombie(int damage);
+	void TakeItem(Item::ItemTypes type);
 
 	void OnDie();
 
@@ -43,6 +45,7 @@ public:
 	int GetMaxAmmo();
 	int GetAmmo();
 	int GetHp();
+
 
 	bool isAlive = false;
 };

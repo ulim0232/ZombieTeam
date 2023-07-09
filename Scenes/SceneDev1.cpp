@@ -11,6 +11,7 @@
 #include "SpriteEffect.h"
 #include "TextGo.h"
 #include "RectangleGo.h"
+#include "item.h"
 
 
 SceneDev1::SceneDev1() : Scene(SceneId::Dev1), player(nullptr)
@@ -22,6 +23,8 @@ SceneDev1::SceneDev1() : Scene(SceneId::Dev1), player(nullptr)
 	resources.push_back(make_tuple(ResourceTypes::Texture, "graphics/crawler.png"));
 	resources.push_back(make_tuple(ResourceTypes::Texture, "graphics/bullet.png"));
 	resources.push_back(make_tuple(ResourceTypes::Texture, "graphics/blood.png"));
+	resources.push_back(make_tuple(ResourceTypes::Texture, "graphics/heart_pickup.png"));
+	resources.push_back(make_tuple(ResourceTypes::Texture, "graphics/ammo_pickup.png"));
 	resources.push_back(make_tuple(ResourceTypes::Font, "fonts/zombiecontrol.ttf"));
 
 }
@@ -102,15 +105,30 @@ void SceneDev1::Init()
 	};
 	bloodEffectPool.Init();
 
-	//crosshair->sortLayer = 2; 
-	//100이후 부터는 ui레이어로 사용, 커서는 가장 위에 그려야한다, ui좌표계로 관리하면 100번보다 뒤의 레이어로 해야함
-	
+	//아이템 생성
+	itemPool.OnCreate = [this](Item* item)
+	{
+		Item::ItemTypes itemtype = (Item::ItemTypes)Utils::RandomRange(0, Item::TotalTypes);
+		item->SetType(itemtype);
+		if (itemtype == Item::ItemTypes::Ammo)
+		{
+			item->textureId = "graphics/ammo_pickup.png";
+		}
+		else if (itemtype == Item::ItemTypes::Potion)
+		{
+			item->textureId = "graphics/heart_pickup.png";
+		}
+		item->SetPlayer(player);
+		item->sortLayer = 2;
+	};
+	itemPool.Init();
 }
 
 void SceneDev1::Release()
 {
 	zombiePool.Release();
 	bloodEffectPool.Release();
+	itemPool.Release();
 
 	for (auto go : gameObjects)
 	{
@@ -196,6 +214,7 @@ void SceneDev1::Exit()
 {
 	ClearObjectPool(zombiePool);
 	ClearObjectPool(bloodEffectPool);
+	ClearObjectPool(itemPool);
 
 	player->Reset();
 	Scene::Exit();
@@ -234,6 +253,7 @@ void SceneDev1::Update(float dt)
 	}
 	if (zombiePool.GetUseList().size() == 0)
 	{
+		itemPool.Clear(); //웨이브 바뀔 때마다 아이템 삭제
 		SpawnZombies(10, player->GetPosition(), 800.f);
 		wave++;
 		TextGo* findText = (TextGo*)FindGo("Wave");
@@ -241,11 +261,9 @@ void SceneDev1::Update(float dt)
 	}
 	RectangleGo* hpBar = (RectangleGo*)FindGo("HpBar");
 	hpBar->rectangle.setSize({ player->GetHp() * 3.f, 30.f });
-	if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
-	{
-		TextGo* findText = (TextGo*)FindGo("AmmoCount");
-		findText->text.setString(to_string(player->GetAmmo()) + "/" + to_string(player->GetMaxAmmo()));
-	}
+
+	TextGo* findText = (TextGo*)FindGo("AmmoCount");
+	findText->text.setString(to_string(player->GetAmmo()) + "/" + to_string(player->GetMaxAmmo()));
 
 }
 
@@ -350,12 +368,27 @@ void SceneDev1::OnDieZombie(Zombie* zombie)
 	blood->SetPosition(zombie->GetPosition());
 	AddGo(blood);
 
+	//아이템 생성
+	int random = Utils::RandomRange(0, 9);
+	if (random >= 5)
+	{
+		Item* item = itemPool.Get();
+		item->SetPosition(zombie->GetPosition());
+		AddGo(item);
+	}
+
 	RemoveGo(zombie); //리스트에서 삭제
 	zombiePool.Return(zombie);
 
 	//남은 좀비 수 변경
 	findText = (TextGo*)FindGo("ZombieCount");
 	findText->text.setString("ZombieCount: " + to_string(zombiePool.GetUseList().size()));
+}
+
+void SceneDev1::TakeItem(Item* item)
+{
+	RemoveGo(item); //리스트에서 삭제
+	itemPool.Return(item);
 }
 
 const list<Zombie*>* SceneDev1::GetZombieList() const
