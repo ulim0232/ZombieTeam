@@ -169,13 +169,13 @@ void Player::OnHitZombie(int damage)
 
 void Player::TakeItem(Item::ItemTypes type)
 {
-	if (type == Item::ItemTypes::Ammo && ammo <= maxAmmo - 10)
+	if (type == Item::ItemTypes::Ammo)
 	{
-		ammo += 10;
+		ammo = ammo + 10 < maxAmmo ? ammo + 10 : maxAmmo;
 	}
 	if (type == Item::ItemTypes::Potion && hp <= maxHp - 10)
 	{
-		hp += 10;
+		hp = hp + 10 < maxHp ? hp + 10 : maxHp;
 	}
 }
 
