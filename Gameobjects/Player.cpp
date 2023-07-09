@@ -173,7 +173,7 @@ void Player::TakeItem(Item::ItemTypes type)
 	{
 		ammo = ammo + 10 < maxAmmo ? ammo + 10 : maxAmmo;
 	}
-	if (type == Item::ItemTypes::Potion && hp <= maxHp - 10)
+	if (type == Item::ItemTypes::Potion)
 	{
 		hp = hp + 10 < maxHp ? hp + 10 : maxHp;
 	}
