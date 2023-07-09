@@ -54,14 +54,19 @@ void SceneDev1::Init()
 	AddGo(new TextGo("ZombieCount", "fonts/zombiecontrol.ttf"));
 	AddGo(new TextGo("AmmoCount", "fonts/zombiecontrol.ttf"));
 	AddGo(new TextGo("Fps", "fonts/zombiecontrol.ttf"));
+	AddGo(new TextGo("HpText", "fonts/zombiecontrol.ttf")); //체력수치 추가
+	AddGo(new TextGo("NoBullet", "fonts/zombiecontrol.ttf")); //총알없다.
 
 	//총알 아이콘
 	AddGo(new SpriteGo("graphics/ammo_icon.png", "AmmoIcon"));
 
 	//체력바 생성
 	sf::Vector2f size(300.f, 30.f);
+	
 	AddGo(new RectangleGo(size, "HpBar"));
 	AddGo(new RectangleGo(size, "MaxHpBar"));
+	AddGo(new RectangleGo(staminaSize, "StaminaBar"));
+	AddGo(new RectangleGo(staminaSize, "MaxStaminaBar"));
 
 	sf::Vector2f tileWorldSize = { 50.f, 50.f };
 	sf::Vector2f tileTexSize = { 50.f ,50.f };
@@ -107,6 +112,8 @@ void SceneDev1::Init()
 
 	//crosshair->sortLayer = 2; 
 	//100이후 부터는 ui레이어로 사용, 커서는 가장 위에 그려야한다, ui좌표계로 관리하면 100번보다 뒤의 레이어로 해야함
+	
+
 	
 }
 
@@ -163,6 +170,23 @@ void SceneDev1::Enter()
 	findText->SetPosition(textPos.x * 0.7f, textPos.y * 0.97f); //setposition 위치 조심
 	findText->sortLayer = 100;
 
+	/*waveGo = (TextGo*)FindGo("WaveMessage");
+	std::string ssd = "WAVE Start :" + to_string(countDown);
+	waveGo->SetText(ssd,20,sf::Color::Magenta,Origins::ML,104, 10, 10);
+	waveGo->SetActive(false);*/
+	//waveGo->text.setCharacterSize(80);
+	//waveGo->text.setFillColor(sf::Color::White);
+	//waveGo->SetOrigin(Origins::ML);
+	//waveGo->SetPosition(textPos.x * 0.3f, textPos.y * 0.5f); //setposition 위치 조심
+	//waveGo->sortLayer = 104;
+	//waveGo->SetActive(false);
+
+	/*fpsGo = (TextGo*)FindGo("Fps");
+	std::string ss = "FPS: " + to_string(fps);
+	fpsGo->SetText(ss, 20, sf::Color::Green, Origins::TL, 100, 10, 10);
+	fpsGo->SetActive(false);*/
+
+
 	findText = (TextGo*)FindGo("ZombieCount");
 	findText->text.setCharacterSize(40);
 	findText->text.setString("ZombieCount: " + to_string(zombiePool.GetUseList().size()));
@@ -170,6 +194,24 @@ void SceneDev1::Enter()
 	findText->SetOrigin(Origins::BR);
 	findText->SetPosition(textPos.x * 0.95f, textPos.y * 0.97f); //setposition 위치 조심
 	findText->sortLayer = 100;
+
+	//체력 수치
+	HpGo = (TextGo*)FindGo("HpText");
+	HpGo->text.setCharacterSize(25);
+	HpGo->text.setString(to_string(player->GetHp())+"/"+to_string(player->GetMaxHp()));
+	HpGo->text.setFillColor(sf::Color::Black);
+	HpGo->SetOrigin(Origins::BL);
+	HpGo->SetPosition(textPos.x * 0.34f, textPos.y * 0.96f); //setposition 위치 조심
+	HpGo->sortLayer = 102;
+	
+	NoBulletGo= (TextGo*)FindGo("NoBullet");
+	NoBulletGo->text.setCharacterSize(60);
+	NoBulletGo->text.setString("Not Enough Bullet");
+	NoBulletGo->text.setFillColor(sf::Color::Red);
+	NoBulletGo->SetOrigin(Origins::MC);
+	NoBulletGo->SetPosition(textPos.x * 0.5f, textPos.y * 0.5f);
+	NoBulletGo->sortLayer = 103;
+	NoBulletGo->SetActive(false);
 
 	fpsGo = (TextGo*)FindGo("Fps");
 	std::string ss = "FPS: " + to_string(fps);
@@ -200,6 +242,27 @@ void SceneDev1::Enter()
 	recGo->SetOrigin(Origins::BL);
 	recGo->SetPosition(textPos.x * 0.25f, textPos.y * 0.97f);
 	recGo->sortLayer = 100;
+	
+
+	recGo = (RectangleGo*)FindGo("StaminaBar");
+	recGo->rectangle.setFillColor(sf::Color::Yellow);
+	recGo->SetOrigin(Origins::BL);
+	recGo->SetPosition(textPos.x * 0.55f, textPos.y * 0.5f);
+	recGo->sortLayer = 101;
+	recGo->rectangle.setSize({ 0.f,0.f });
+
+	
+	recGo = (RectangleGo*)FindGo("MaxStaminaBar");
+	recGo->rectangle.setFillColor(sf::Color::Black);
+	recGo->rectangle.setOutlineColor(sf::Color::Black);
+	recGo->rectangle.setOutlineThickness(0.5f);
+	recGo->SetOrigin(Origins::BL);
+	recGo->SetPosition(textPos.x * 0.55f, textPos.y * 0.5f);
+	recGo->sortLayer = 100;
+	recGo->rectangle.setSize({ 0.f,0.f });
+
+	
+	
 }
 
 void SceneDev1::Exit()
@@ -234,7 +297,14 @@ void SceneDev1::Update(float dt)
 	{
 		if (INPUT_MGR.GetKeyDown(sf::Keyboard::Return))
 		{
+			/*TextGo* waveGo = (TextGo*)FindGo("WaveMessage");
+			waveGo->SetActive(true);
+			countDown--;
+			if (clock.getElapsedTime() >= sf::seconds(3.f))
+			{*/
 			isPause = false;
+			//waveGo->SetActive(false);
+			//}
 		}
 		return;
 	}
@@ -262,16 +332,70 @@ void SceneDev1::Update(float dt)
 	}
 	RectangleGo* hpBar = (RectangleGo*)FindGo("HpBar");
 	hpBar->rectangle.setSize({ player->GetHp() * 3.f, 30.f });
-	if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))
+
+	if (!isPause) //hp 수치 갱신
+	{
+		std::string ss1 = to_string(player->GetHp()) + "/" + to_string(player->GetMaxHp());
+		HpGo->text.setString(ss1);
+	}
+
+	//삭제요망
+	/*if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left))*/
 	{
 		TextGo* findText = (TextGo*)FindGo("AmmoCount");
 		findText->text.setString(to_string(player->GetAmmo()) + "/" + to_string(player->GetMaxAmmo()));
 	}
+
+	if (player->GetAmmo() <= 0) //총알 없을때 메시지
+	{
+		
+		TextGo* NoBulletGo = (TextGo*)FindGo("NoBullet");
+
+		NoBulletGo->SetActive(true);
+		if (clock.getElapsedTime() <= blinkTime)
+		{
+			NoBulletGo->text.setFillColor(sf::Color::White);
+		}
+		else {
+			NoBulletGo->text.setFillColor(sf::Color::Red);
+			if (clock.getElapsedTime() >= sf::seconds(0.6f))
+				clock.restart();
+		}
+	}
+	else
+	{
+		NoBulletGo->SetActive(false);
+	}
+
 	if (INPUT_MGR.GetKey(sf::Keyboard::LControl) && INPUT_MGR.GetKeyDown(sf::Keyboard::G))
 	{
 		fpsGo->SetActive(!fpsGo->GetActive());
 	}
+	if (!isPause)
+	{
+		RectangleGo* staminaBar = (RectangleGo*)FindGo("StaminaBar");
+		staminaBar->rectangle.setSize({ player->GetStamina() * 10.f,5.f });
+		RectangleGo* maxStaminaBar = (RectangleGo*)FindGo("MaxStaminaBar");
+		maxStaminaBar->rectangle.setSize(staminaSize);
+		/*RectangleGo* MaxstaminaBar = (RectangleGo*)FindGo("StaminaBar");
+		MaxstaminaBar->rectangle.setSize({ player->GetStamina() * 10.f,5.f });*/
+		if ((player->GetStamina() == player->GetMaxStamina()))
+		{
+			if (duration <= 0.f)
+			{
+				duration = 1.5f;
+			}
 
+			if (dt > 1.5f)
+				dt = 0.f;
+			StaminaControl(dt);
+		}
+		else if((player->GetStamina() != player->GetMaxStamina()))
+		{
+			StaminaSet();
+			
+		}
+	}
 
 }
 
@@ -396,4 +520,40 @@ void SceneDev1::OnDiePlayer()
 VertexArrayGo* SceneDev1::GetBackground()
 {
 	return background;
+}
+
+void SceneDev1::StaminaControl(float dt)
+{
+	
+	
+		timer += +dt;
+
+		RectangleGo* staminaBar = (RectangleGo*)FindGo("StaminaBar");
+		RectangleGo* maxStaminaBar = (RectangleGo*)FindGo("MaxStaminaBar");
+		sf::Color start1 = sf::Color::Yellow;
+		sf::Color start2 = sf::Color::Black;
+		sf::Color end = { 255,255,255,0 };
+	
+		sf::Color color1 = Utils::Lerp(end, start1, duration - timer);//duration - timer<0 투명화
+		
+		sf::Color color2 = Utils::Lerp(end, start2, duration - timer);
+	
+		staminaBar->rectangle.setFillColor(sf::Color::Color(color1));
+		maxStaminaBar->rectangle.setFillColor(sf::Color::Color(color2));
+		//transparency = true;
+	
+		maxStaminaBar->rectangle.setOutlineThickness(0.f);
+	
+}
+
+void SceneDev1::StaminaSet()
+{
+	if (timer > 1.5f)
+		timer = 0.f;
+	RectangleGo* staminaBar = (RectangleGo*)FindGo("StaminaBar");
+	RectangleGo* maxStaminaBar = (RectangleGo*)FindGo("MaxStaminaBar");
+	staminaBar->rectangle.setFillColor(sf::Color::Yellow);
+	maxStaminaBar->rectangle.setFillColor(sf::Color::Black);
+	maxStaminaBar->rectangle.setOutlineThickness(0.5f);
+	//transparency = false;
 }
