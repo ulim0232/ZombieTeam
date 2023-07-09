@@ -55,6 +55,8 @@ void SceneDev1::Init()
 	AddGo(new TextGo("AmmoCount", "fonts/zombiecontrol.ttf"));
 	AddGo(new TextGo("Fps", "fonts/zombiecontrol.ttf"));
 	AddGo(new TextGo("StatUpText", "fonts/zombiecontrol.ttf"));
+	AddGo(new TextGo("GameOver", "fonts/zombiecontrol.ttf"));
+
 
 	//스탯 업 백그라운드 생성
 	AddGo(new SpriteGo("graphics/background.png", "StatUpBg"));
@@ -178,13 +180,18 @@ void SceneDev1::Enter()
 
 	findText = (TextGo*)FindGo("StatUpText");
 	std::string ss = "Num4: Increase Damage\nNum5: Increase Shot speed\nNum6: Increase shot number";
-	findText->SetText(ss, 50, sf::Color::Red, Origins::MC, 100, uiView.getSize().x * 0.5f, uiView.getSize().y * 0.5f);
+	findText->SetText(ss, 50, sf::Color::Red, Origins::MC, 100, textPos.x * 0.5f, textPos.y * 0.5f);
 	findText->SetActive(false);
 
 	fpsGo = (TextGo*)FindGo("Fps");
 	ss = "FPS: " + to_string(fps);
 	fpsGo->SetText(ss, 17, sf::Color::Green, Origins::TL, 100, 10.f, 10.f);
 	fpsGo->SetActive(false);
+
+	findText = (TextGo*)FindGo("GameOver");
+	ss = "PRESS ENTER TO CONTINUE";
+	findText->SetText(ss, 50, sf::Color::White, Origins::MC, 100, textPos.x * 0.5f, textPos.y * 0.5f);
+	findText->SetActive(false);
 
 	SpriteGo* findGo = (SpriteGo*)FindGo("AmmoIcon");
 	findGo->SetOrigin(Origins::BL);
@@ -242,19 +249,21 @@ void SceneDev1::Update(float dt)
 	}
 
 	worldView.setCenter(player->GetPosition()); //플레이어의 위치로 센터로 계속 바꾼다.
+
 	if (isGameOver)
 	{
-		SCENE_MGR.ChangeScene(sceneId);
-		cout << "restart" << endl;
-	}
-	if (isPause)
-	{
+		TextGo* findText = (TextGo*)FindGo("GameOver");
+		findText->SetActive(true);
+
 		if (INPUT_MGR.GetKeyDown(sf::Keyboard::Return))
 		{
-			isPause = false;
+			findText->SetActive(false);
+			isGameOver = true;
+			SCENE_MGR.ChangeScene(sceneId);
 		}
 		return;
 	}
+
 	Scene::Update(dt);
 
 	/*좀비 스폰, 디스폰 test code*/

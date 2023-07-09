@@ -54,6 +54,7 @@ void Zombie::Update(float dt)
 {
     SpriteGo::Update(dt);
 
+
     /*플레이어를 추격*/
     if (player == nullptr)
         return;

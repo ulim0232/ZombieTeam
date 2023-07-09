@@ -53,8 +53,8 @@ void Bullet::Reset()
 void Bullet::Update(float dt)
 {
 	SpriteGo::Update(dt);
+
 	//회전은 고정
-	
 	range -= speed * dt; // 이동량 빼기
 	if (range <= 0.f) //사거리까지 이동하면 총알 삭제
 	{

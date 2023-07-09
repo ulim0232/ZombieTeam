@@ -37,7 +37,6 @@ protected:
 
 	Player* player = nullptr; //플레이어를 쫓아가야하기 때문에 필요
 
-
 public:
 
 	Zombie(const string& n = "");

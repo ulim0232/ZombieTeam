@@ -14,6 +14,7 @@ protected:
 	float range = 2000.f;
 	int damage = 25;
 
+
 	const list<Zombie*>* zombies;
 	
 	//ObjectPool<Bullet>* pool; public으로 임시 전환

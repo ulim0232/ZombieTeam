@@ -53,6 +53,8 @@ public:
 	void ShotSpeedUp(float shotDelay);
 	void AddShotBullet();
 
+	ObjectPool<Bullet> GetBulletPool() { return poolBullets; }
+
 	bool isAlive = false;
 };
 
