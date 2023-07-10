@@ -23,6 +23,9 @@ const int Zombie::scores[3] = { 10, 5, 3 };
 Zombie::Zombie(const string& n)
     :SpriteGo("", n)
 {
+    soundBufferSplat.loadFromFile("sound/splat.wav");
+
+    soundSplat.setBuffer(soundBufferSplat);
 }
 
 Zombie::~Zombie()
@@ -121,6 +124,8 @@ void Zombie::OnHitBullet(int damage)
         if (sceneDev1 != nullptr)
         {
             sceneDev1->OnDieZombie(this);
+            soundSplat.play();
+            soundSplat.setVolume(5.f);
         }
     }
 }

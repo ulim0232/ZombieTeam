@@ -18,6 +18,11 @@ protected:
 	VertexArrayGo* background;
 	sf::FloatRect wallBounds;
 	TextGo* fpsGo;
+	TextGo* HpGo;
+	TextGo* NoBulletGo;
+	TextGo* waveGo;
+	sf::Clock clock;
+	const sf::Time blinkTime = sf::seconds(0.3f);
 
 	ObjectPool<Zombie> zombiePool;
 	ObjectPool<SpriteEffect> bloodEffectPool;
@@ -30,7 +35,12 @@ protected:
 	bool isPause = true;
 	int fps = 0;
 	float totalDt = 0.f;
+	float duration = 1.5f;
+	float timer = 0.f;
+	bool transparency = false;
+	int countDown = 3;
 
+	sf::Vector2f staminaSize = { 100.f, 5.f };
 public:
 	SceneDev1();
 	virtual ~SceneDev1() override;
@@ -59,6 +69,8 @@ public:
 	void OnDiePlayer();
 	VertexArrayGo* GetBackground();
 
+	void StaminaControl(float dt);
+	void StaminaSet();
 	void NextWave(SpriteGo* statUpBg, TextGo* statUpText);
 };
 
