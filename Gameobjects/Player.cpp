@@ -111,6 +111,8 @@ void Player::Update(float dt)
 	if (INPUT_MGR.GetKeyUp(sf::Keyboard::R) && ammo > 0)
 	{
 		ammo = maxAmmo;
+		soundReload.play();
+		soundReload.setVolume(5.f);
 	}
 
 	float magnitude = Utils::Magnitude(direction);
@@ -174,14 +176,13 @@ void Player::Update(float dt)
 			//soundShoot.setVolume(5.f); //사운드 조정
 		}
 	}
-	if (ammo <= 0) //총알이 바닥난 경우 // 장전딜레이 추가
+	if (ammo < shotBulletNum) //총알이 바닥난 경우 // 장전딜레이 추가
 	{
 		if (!reloadTimeCheck)
 		{
 			clock.restart();
 			reloadTimeCheck = true;
 		}
-		
 		if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left)&& (clock.getElapsedTime() < reloadTime))
 		{
 			soundReloadFail.play(); //격발 사운드
@@ -269,6 +270,11 @@ int Player::GetAmmo()
 int Player::GetHp()
 {
 	return hp;
+}
+
+int Player::GetshotBulletNum()
+{
+	return shotBulletNum;
 }
 
 void Player::StatUp(int num)

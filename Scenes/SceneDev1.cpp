@@ -425,7 +425,7 @@ void SceneDev1::Update(float dt)
 		}
 	}
 
-	if (player->GetAmmo() <= 0) //총알 없을때 메시지
+	if (player->GetAmmo() < player->GetshotBulletNum()) //총알 없을때 메시지
 	{
 		TextGo* NoBulletGo = (TextGo*)FindGo("NoBullet");
 

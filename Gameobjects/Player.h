@@ -78,6 +78,7 @@ public:
 	int GetMaxAmmo();
 	int GetAmmo();
 	int GetHp();
+	int GetshotBulletNum();
 
 	void StatUp(int num);
 	void DamageUp(int damage);
