@@ -91,7 +91,6 @@ void Player::Update(float dt)
 	if ((DASH && (MOVERIGHT || MOVELEFT || MOVEUP || MOVEDOWN)) && (stamina > 0.0f)) //키 누르는중엔
 	{
 		stamina -= useStamina * dt; //스태미너 지속적인 감소
-		cout << stamina << endl;
 	}
 	else 
 	{
@@ -109,6 +108,10 @@ void Player::Update(float dt)
 		speed /= 1.5f;
 	}
 
+	if (INPUT_MGR.GetKeyUp(sf::Keyboard::R) && ammo > 0)
+	{
+		ammo = maxAmmo;
+	}
 
 	float magnitude = Utils::Magnitude(direction);
 	if (magnitude > 1.f)
