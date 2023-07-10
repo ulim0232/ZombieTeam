@@ -52,7 +52,11 @@ void Player::Reset()
 	hp = maxHp;
 	stamina = maxStamina;
 	isAlive = true;
+	maxAmmo = 5;
 	ammo = maxAmmo;
+	stamina = 0.f;
+	shotBulletNum = 1;
+	shotDelay = 0.5f;
 
 	for (auto bullet : poolBullets.GetUseList())
 	{

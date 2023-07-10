@@ -391,16 +391,12 @@ void SceneDev1::Update(float dt)
 			findText->text.setString("WAVE: " + to_string(wave));
 		}	
 	}
-	RectangleGo* hpBar = (RectangleGo*)FindGo("HpBar");
-	hpBar->rectangle.setSize({ player->GetHp() * 3.f, 30.f });
-
-	TextGo* findText = (TextGo*)FindGo("AmmoCount");
-	findText->text.setString(to_string(player->GetAmmo()) + "/" + to_string(player->GetMaxAmmo()));
+	
 
 	if (!isGameOver) //hp 수치 갱신
 	{
-		std::string ss1 = to_string(player->GetHp()) + "/" + to_string(player->GetMaxHp());
-		HpGo->text.setString(ss1);
+		//std::string ss1 = to_string(player->GetHp()) + "/" + to_string(player->GetMaxHp());
+		//HpGo->text.setString(ss1);
 
 		RectangleGo* staminaBar = (RectangleGo*)FindGo("StaminaBar");
 		staminaBar->rectangle.setSize({ player->GetStamina() * 10.f,5.f });
@@ -449,6 +445,15 @@ void SceneDev1::Update(float dt)
 	{
 		fpsGo->SetActive(!fpsGo->GetActive());
 	}
+	RectangleGo* hpBar = (RectangleGo*)FindGo("HpBar");
+	hpBar->rectangle.setSize({ player->GetHp() * 3.f, 30.f });
+
+	TextGo* findText = (TextGo*)FindGo("AmmoCount");
+	findText->text.setString(to_string(player->GetAmmo()) + "/" + to_string(player->GetMaxAmmo()));
+
+	std::string ss1 = to_string(player->GetHp()) + "/" + to_string(player->GetMaxHp());
+	HpGo->text.setString(ss1);
+	
 }
 
 void SceneDev1::Draw(sf::RenderWindow& window)
