@@ -29,6 +29,8 @@ SceneDev1::SceneDev1() : Scene(SceneId::Dev1), player(nullptr)
 	resources.push_back(make_tuple(ResourceTypes::Texture, "graphics/ammo_pickup.png"));
 	resources.push_back(make_tuple(ResourceTypes::Font, "fonts/zombiecontrol.ttf"));
 	resources.push_back(make_tuple(ResourceTypes::Texture, "graphics/background.png"));
+	soundBufferPowerup.loadFromFile("sound/powerup.wav");
+	soundPowerup.setBuffer(soundBufferPowerup);
 }
 
 SceneDev1::~SceneDev1()
@@ -636,7 +638,7 @@ void SceneDev1::NextWave(SpriteGo* statUpBg, TextGo* statUpText)
 	wave++;
 	TextGo* findText = (TextGo*)FindGo("Wave");
 	findText->text.setString("WAVE: " + to_string(wave));
-
+	soundPowerup.play();
 	statUpBg->SetActive(false);
 	statUpText->SetActive(false);
 	player->SetActive(true);

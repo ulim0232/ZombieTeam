@@ -24,6 +24,9 @@ protected:
 	sf::Clock clock;
 	const sf::Time blinkTime = sf::seconds(0.3f);
 
+	sf::SoundBuffer soundBufferPowerup;
+	sf::Sound soundPowerup;
+
 	ObjectPool<Zombie> zombiePool;
 	ObjectPool<SpriteEffect> bloodEffectPool;
 	ObjectPool<Item> itemPool;

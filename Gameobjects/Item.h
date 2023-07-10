@@ -17,6 +17,9 @@ protected:
 	ItemTypes type;
 	Player* player = nullptr;
 
+	sf::SoundBuffer soundBufferPickup;
+	sf::Sound soundPickup;
+
 public:
 	
 	static const int TotalTypes = 2;

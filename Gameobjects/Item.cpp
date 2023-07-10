@@ -7,6 +7,9 @@
 Item::Item(const string& textureId, const string& n)
 	:SpriteGo(textureId, n)
 {
+	soundBufferPickup.loadFromFile("sound/pickup.wav");
+
+	soundPickup.setBuffer(soundBufferPickup);
 }
 
 Item::~Item()
@@ -51,7 +54,7 @@ void Item::Update(float dt)
 	if (player->isAlive && sprite.getGlobalBounds().intersects(player->sprite.getGlobalBounds()))
 	{
 		player->TakeItem(type);
-
+		soundPickup.play();
 		Scene* scene = SCENE_MGR.GetCurrScene();
 		SceneDev1* sceneDev1 = dynamic_cast<SceneDev1*>(scene); //c++의 형변환 연산자
 		if (sceneDev1 != nullptr)
