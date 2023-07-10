@@ -154,23 +154,6 @@ void Player::Update(float dt)
 				ammo--;
 			}
 			rebound = true;		
-
-
-			//원래 코드
-			/*Bullet* bullet = poolBullets.Get();
-			bullet->Fire(GetPosition(), look, 1000.f);
-			rebound = true;
-
-			Scene* scene = SCENE_MGR.GetCurrScene();
-			SceneDev1* sceneDev1 = dynamic_cast<SceneDev1*>(scene); //c++의 형변환 연산자
-			if (sceneDev1 != nullptr)
-			{
-				bullet->SetZombieList(sceneDev1->GetZombieList());
-				sceneDev1->AddGo(bullet);
-			}
-
-			SCENE_MGR.GetCurrScene()->AddGo(bullet);
-			ammo--;*/
 		}
 	}
 	//발사 딜레이
@@ -238,8 +221,8 @@ void Player::TakeItem(Item::ItemTypes type)
 {
 	if (type == Item::ItemTypes::Ammo)
 	{
-		//ammo = ammo + 10 < maxAmmo ? ammo + 10 : maxAmmo;
 		maxAmmo += 10;
+		ammo = ammo + 10 < maxAmmo ? ammo + 10 : maxAmmo;
 	}
 	if (type == Item::ItemTypes::Potion)
 	{

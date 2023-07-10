@@ -59,7 +59,7 @@ void SceneTitle::Init()
 	title1->text.setFillColor(sf::Color::White);
 	title1->text.setOutlineColor(sf::Color::Black);
 	title1->SetOrigin(Origins::MC);
-	title1->SetPosition(screenSize.x * 0.15f, screenSize.y * 0.85f);
+	title1->SetPosition(screenSize.x * 0.1f, screenSize.y * 0.80f);
 	title1->sortLayer = 102;
 	AddGo(title1);
 	title1->SetActive(false);
