@@ -88,12 +88,12 @@ void Player::Update(float dt)
 		speed *= 1.5f; //스피드 업!
 	}
 	// 대쉬키가 눌려있으면서 방향키가 눌리고 스태미너가 있고, 스태미너
-	if ((DASH && (MOVERIGHT || MOVELEFT || MOVEUP || MOVEDOWN)) && (stamina > 0.f)) //키 누르는중엔
+	if ((DASH && (MOVERIGHT || MOVELEFT || MOVEUP || MOVEDOWN)) && (stamina > 0.0f)) //키 누르는중엔
 	{
 		stamina -= useStamina * dt; //스태미너 지속적인 감소
-
+		cout << stamina << endl;
 	}
-	else
+	else 
 	{
 		stamina += healStamina * dt;
 		if (stamina > 10.f) //스태미너 10으로 고정

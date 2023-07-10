@@ -32,7 +32,7 @@ protected:
 	int score = 0;
 	int HiScore = 0;
 	int wave = 0;
-	bool isPause = true;
+	//bool isPause = true;
 	int fps = 0;
 	float totalDt = 0.f;
 	float duration = 1.5f;

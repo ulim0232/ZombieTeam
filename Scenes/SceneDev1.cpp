@@ -165,7 +165,7 @@ void SceneDev1::Enter()
 	player->SetPosition(0.f, 0.f);
 	
 	isGameOver = false;
-	isPause = true;
+	//isPause = true;
 	score = 0;
 	wave = 0;
 	fps = 0;
@@ -275,7 +275,7 @@ void SceneDev1::Enter()
 	recGo = (RectangleGo*)FindGo("StaminaBar");
 	recGo->rectangle.setFillColor(sf::Color::Yellow);
 	recGo->SetOrigin(Origins::BL);
-	recGo->SetPosition(textPos.x * 0.25f + 150.f, textPos.y * 0.965f); //textPos.x * 0.55f, textPos.y * 0.5f
+	recGo->SetPosition(textPos.x * 0.55f, textPos.y * 0.5f);
 	recGo->sortLayer = 103; //101
 	recGo->rectangle.setSize({ 0.f,0.f });
 	
@@ -343,7 +343,7 @@ void SceneDev1::Update(float dt)
 	}
 	if (INPUT_MGR.GetKeyDown(sf::Keyboard::Num3))
 	{
-		isPause = true;
+		//isPause = true;
 	}
 	if (zombiePool.GetUseList().size() == 0)
 	{
@@ -397,10 +397,32 @@ void SceneDev1::Update(float dt)
 	TextGo* findText = (TextGo*)FindGo("AmmoCount");
 	findText->text.setString(to_string(player->GetAmmo()) + "/" + to_string(player->GetMaxAmmo()));
 
-	if (!isPause) //hp 수치 갱신
+	if (!isGameOver) //hp 수치 갱신
 	{
 		std::string ss1 = to_string(player->GetHp()) + "/" + to_string(player->GetMaxHp());
 		HpGo->text.setString(ss1);
+
+		RectangleGo* staminaBar = (RectangleGo*)FindGo("StaminaBar");
+		staminaBar->rectangle.setSize({ player->GetStamina() * 10.f,5.f });
+		RectangleGo* maxStaminaBar = (RectangleGo*)FindGo("MaxStaminaBar");
+		maxStaminaBar->rectangle.setSize(staminaSize);
+		/*RectangleGo* MaxstaminaBar = (RectangleGo*)FindGo("StaminaBar");
+		MaxstaminaBar->rectangle.setSize({ player->GetStamina() * 10.f,5.f });*/
+		if ((player->GetStamina() == player->GetMaxStamina()))
+		{
+			if (duration <= 0.f)
+			{
+				duration = 1.5f;
+			}
+
+			if (dt > 1.5f)
+				dt = 0.f;
+			StaminaControl(dt);
+		}
+		else if ((player->GetStamina() != player->GetMaxStamina()))
+		{
+			StaminaSet();
+		}
 	}
 
 	if (player->GetAmmo() <= 0) //총알 없을때 메시지
@@ -427,32 +449,6 @@ void SceneDev1::Update(float dt)
 	{
 		fpsGo->SetActive(!fpsGo->GetActive());
 	}
-	if (!isPause)
-	{
-		RectangleGo* staminaBar = (RectangleGo*)FindGo("StaminaBar");
-		staminaBar->rectangle.setSize({ player->GetStamina() * 10.f,5.f });
-		RectangleGo* maxStaminaBar = (RectangleGo*)FindGo("MaxStaminaBar");
-		maxStaminaBar->rectangle.setSize(staminaSize);
-		/*RectangleGo* MaxstaminaBar = (RectangleGo*)FindGo("StaminaBar");
-		MaxstaminaBar->rectangle.setSize({ player->GetStamina() * 10.f,5.f });*/
-		if ((player->GetStamina() == player->GetMaxStamina()))
-		{
-			if (duration <= 0.f)
-			{
-				duration = 1.5f;
-			}
-
-			if (dt > 1.5f)
-				dt = 0.f;
-			StaminaControl(dt);
-		}
-		else if((player->GetStamina() != player->GetMaxStamina()))
-		{
-			StaminaSet();
-			
-		}
-	}
-
 }
 
 void SceneDev1::Draw(sf::RenderWindow& window)
@@ -595,8 +591,6 @@ VertexArrayGo* SceneDev1::GetBackground()
 
 void SceneDev1::StaminaControl(float dt)
 {
-	
-	
 		timer += +dt;
 
 		RectangleGo* staminaBar = (RectangleGo*)FindGo("StaminaBar");
@@ -614,7 +608,6 @@ void SceneDev1::StaminaControl(float dt)
 		//transparency = true;
 	
 		maxStaminaBar->rectangle.setOutlineThickness(0.f);
-	
 }
 
 void SceneDev1::StaminaSet()
