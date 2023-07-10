@@ -129,7 +129,6 @@ void Player::Update(float dt)
 	{
 		if (INPUT_MGR.GetMouseButtonDown(sf::Mouse::Left) && ammo >= shotBulletNum)
 		{
-			
 			Scene* scene = SCENE_MGR.GetCurrScene();
 			SceneDev1* sceneDev1 = dynamic_cast<SceneDev1*>(scene);
 
@@ -141,7 +140,8 @@ void Player::Update(float dt)
 			float bulletHeight = bullets[0]->sprite.getLocalBounds().height;
 
 			sf::Vector2f topPos = GetPosition() + Utils::Direction((Utils::Angle(look) - 90)) * (bulletHeight * shotBulletNum);
-
+			soundShoot.play(); //격발 사운드
+			soundShoot.setVolume(5.f); //사운드 조정
 			for (float i = 0; i < shotBulletNum; i += 1.f)
 			{
 				bullets[i]->Fire(topPos + Utils::Direction((Utils::Angle(look) + 90)) * i * (bulletHeight * 2.f), look, 1000.f);
@@ -181,12 +181,11 @@ void Player::Update(float dt)
 		{
 			timer = 0.f;
 			rebound = false;
-		}
-			SCENE_MGR.GetCurrScene()->AddGo(bullet);
-			ammo--;
+			//SCENE_MGR.GetCurrScene()->AddGo(bullet);
+			//ammo--;
 
-			soundShoot.play(); //격발 사운드
-			soundShoot.setVolume(5.f); //사운드 조정
+			//soundShoot.play(); //격발 사운드
+			//soundShoot.setVolume(5.f); //사운드 조정
 		}
 	}
 	if (ammo <= 0) //총알이 바닥난 경우 // 장전딜레이 추가
@@ -204,8 +203,6 @@ void Player::Update(float dt)
 		}
 		if (clock.getElapsedTime() >= reloadTime)
 		{
-			
-			
 			//총알 채우기
 			ammo = maxAmmo;
 			reloadTimeCheck = false;
@@ -236,13 +233,13 @@ void Player::OnHitZombie(int damage) //좀비에게 가격당함.
 		soundShoot.setVolume(3.f);
 	}
 }
-}
 
 void Player::TakeItem(Item::ItemTypes type)
 {
 	if (type == Item::ItemTypes::Ammo)
 	{
-		ammo = ammo + 10 < maxAmmo ? ammo + 10 : maxAmmo;
+		//ammo = ammo + 10 < maxAmmo ? ammo + 10 : maxAmmo;
+		maxAmmo += 10;
 	}
 	if (type == Item::ItemTypes::Potion)
 	{

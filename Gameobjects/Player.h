@@ -50,13 +50,9 @@ protected:
 	sf::Sound soundReloadFail;
 	sf::Sound soundReload;
 
-
-
 	sf::Clock clock; //경과시간을 측정하는 객체
 	const sf::Time reloadTime = sf::seconds(3.f); //3초 간격 장전
 	bool reloadTimeCheck = false;
-	
-	
 
 	//추가 끝
 

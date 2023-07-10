@@ -198,23 +198,6 @@ void SceneDev1::Enter()
 	findText->SetPosition(textPos.x * 0.7f, textPos.y * 0.97f); //setposition 위치 조심
 	findText->sortLayer = 100;
 
-	/*waveGo = (TextGo*)FindGo("WaveMessage");
-	std::string ssd = "WAVE Start :" + to_string(countDown);
-	waveGo->SetText(ssd,20,sf::Color::Magenta,Origins::ML,104, 10, 10);
-	waveGo->SetActive(false);*/
-	//waveGo->text.setCharacterSize(80);
-	//waveGo->text.setFillColor(sf::Color::White);
-	//waveGo->SetOrigin(Origins::ML);
-	//waveGo->SetPosition(textPos.x * 0.3f, textPos.y * 0.5f); //setposition 위치 조심
-	//waveGo->sortLayer = 104;
-	//waveGo->SetActive(false);
-
-	/*fpsGo = (TextGo*)FindGo("Fps");
-	std::string ss = "FPS: " + to_string(fps);
-	fpsGo->SetText(ss, 20, sf::Color::Green, Origins::TL, 100, 10, 10);
-	fpsGo->SetActive(false);*/
-
-
 	findText = (TextGo*)FindGo("ZombieCount");
 	findText->text.setCharacterSize(40);
 	findText->text.setString("ZombieCount: " + to_string(zombiePool.GetUseList().size()));
@@ -224,20 +207,13 @@ void SceneDev1::Enter()
 	findText->sortLayer = 100;
 
 	//체력 수치
-	HpGo = (TextGo*)FindGo("HpText");
-	HpGo->text.setCharacterSize(25);
-	HpGo->text.setString(to_string(player->GetHp())+"/"+to_string(player->GetMaxHp()));
-	HpGo->text.setFillColor(sf::Color::Black);
-	HpGo->SetOrigin(Origins::BL);
-	HpGo->SetPosition(textPos.x * 0.34f, textPos.y * 0.96f); //setposition 위치 조심
-	HpGo->sortLayer = 102;
 	
 	NoBulletGo= (TextGo*)FindGo("NoBullet");
 	NoBulletGo->text.setCharacterSize(60);
 	NoBulletGo->text.setString("Not Enough Bullet");
 	NoBulletGo->text.setFillColor(sf::Color::Red);
 	NoBulletGo->SetOrigin(Origins::MC);
-	NoBulletGo->SetPosition(textPos.x * 0.5f, textPos.y * 0.5f);
+	NoBulletGo->SetPosition(textPos.x * 0.5f, textPos.y * 0.65f);
 	NoBulletGo->sortLayer = 103;
 	NoBulletGo->SetActive(false);
 
@@ -288,14 +264,20 @@ void SceneDev1::Enter()
 	recGo->SetPosition(textPos.x * 0.25f, textPos.y * 0.97f);
 	recGo->sortLayer = 100;
 	
+	HpGo = (TextGo*)FindGo("HpText");
+	HpGo->text.setCharacterSize(25);
+	HpGo->text.setString(to_string(player->GetHp()) + "/" + to_string(player->GetMaxHp()));
+	HpGo->text.setFillColor(sf::Color::Black);
+	HpGo->SetOrigin(Origins::BC);
+	HpGo->SetPosition(textPos.x * 0.25f + 150.f, textPos.y * 0.965f);
+	HpGo->sortLayer = 102;
 
 	recGo = (RectangleGo*)FindGo("StaminaBar");
 	recGo->rectangle.setFillColor(sf::Color::Yellow);
 	recGo->SetOrigin(Origins::BL);
-	recGo->SetPosition(textPos.x * 0.55f, textPos.y * 0.5f);
-	recGo->sortLayer = 101;
+	recGo->SetPosition(textPos.x * 0.25f + 150.f, textPos.y * 0.965f); //textPos.x * 0.55f, textPos.y * 0.5f
+	recGo->sortLayer = 103; //101
 	recGo->rectangle.setSize({ 0.f,0.f });
-
 	
 	recGo = (RectangleGo*)FindGo("MaxStaminaBar");
 	recGo->rectangle.setFillColor(sf::Color::Black);
@@ -303,11 +285,8 @@ void SceneDev1::Enter()
 	recGo->rectangle.setOutlineThickness(0.5f);
 	recGo->SetOrigin(Origins::BL);
 	recGo->SetPosition(textPos.x * 0.55f, textPos.y * 0.5f);
-	recGo->sortLayer = 100;
+	recGo->sortLayer = 102; //100
 	recGo->rectangle.setSize({ 0.f,0.f });
-
-	
-	
 }
 
 void SceneDev1::Exit()
@@ -424,10 +403,8 @@ void SceneDev1::Update(float dt)
 		HpGo->text.setString(ss1);
 	}
 
-
 	if (player->GetAmmo() <= 0) //총알 없을때 메시지
 	{
-		
 		TextGo* NoBulletGo = (TextGo*)FindGo("NoBullet");
 
 		NoBulletGo->SetActive(true);
@@ -651,7 +628,7 @@ void SceneDev1::StaminaSet()
 	maxStaminaBar->rectangle.setOutlineThickness(0.5f);
 	//transparency = false;
 }
-}
+
 
 void SceneDev1::NextWave(SpriteGo* statUpBg, TextGo* statUpText)
 {
